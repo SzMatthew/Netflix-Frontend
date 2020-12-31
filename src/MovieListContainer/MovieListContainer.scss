@@ -1,0 +1,12 @@
+@import "../GlobalStyle.scss";
+
+.background{
+    background-color: $dark-grey;
+    padding: 10px $side-padding;
+    height: fit-content;
+
+    .movie-count{
+        color: $white;
+        margin: 20px 0px;
+    }
+}

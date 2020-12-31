@@ -1,0 +1,32 @@
+@import "../../GlobalStyle.scss";
+
+nav{
+    display: flex;
+    justify-content: space-between;
+
+     .active{
+        border-bottom: 1px solid $white;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+     }
+
+     :first-child > li:hover{
+        cursor: pointer;
+        background-color: $mid-grey;
+        color: $red;
+     }
+
+    ul{
+        list-style-type: none;
+
+        li{
+            color: $white;
+            float: left;
+            margin-right: 18px;
+            padding: 15px 8px;
+            transition: 0.3s;
+            border-radius: $border-radius;
+        }
+    }
+    
+}

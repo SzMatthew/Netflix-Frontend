@@ -1,0 +1,54 @@
+$red       : #F65261;
+$mid-grey  : #424242;
+$dark-grey : #232323;
+$light-grey: #555555;
+$white     : #FFFFFF;
+$side-padding: 50px;
+$button-width: 200px;
+$border-radius: 5px;
+
+*{
+    padding: 0px;
+    margin: 0px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: default;
+}
+
+button{
+    border-radius   : $border-radius;
+    border          : none;
+    padding         : 10px 0px;
+    align-content   : center;
+    width           : $button-width;
+    color           : $red;
+    background-color: $light-grey;
+    outline         : none;
+    font-size       : 17px;
+
+    &:hover{
+        cursor: pointer;
+    }
+
+    &.red{
+        background-color: $red;
+        color           : $white;
+    }
+
+    &.red-border{
+        background-color: inherit;
+        border: 2px solid $red;
+        color: $red;
+    }
+}
+
+input[type=text]{
+    background-color: $light-grey;
+    border-radius: $border-radius;
+    padding: 13px;
+    border: 0px;
+    outline: none;
+    color: $white;
+    font-size: 17px;
+
+    
+}
