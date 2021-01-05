@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import MovieCard from './MovieCard/MovieCard';
 import './MovieListContainer.scss';
 import Navbar from './Navbar/Navbar';
 
@@ -7,11 +8,34 @@ class MovieListContainer extends Component {
     {
         super(props);
         this.state = {
-            'currentCategory': 'ALL'
+            'currentCategory': 'ALL',
+            'movies': [],
+            'totalMovieAmount': 0,
+            'offset': 0
         }
      }
+    componentDidMount = () => { 
+        this.getMovies();
+    }
+    
+    getMovies = () =>
+    { 
+        fetch('http://localhost:4000/movies?offset=' + this.state.offset)
+            .then(res => res.json())
+            .then(
+                (result) =>
+                {
+                    this.setState({
+                        'movies'          : result.data,
+                        'totalMovieAmount': result.totalAmount,
+                        'offset': this.state.offset + 1
+                    });
+                }
+            );
+    }
+    
 
-    handleNavbarClick = (category) => {
+    handleNavbarClick = category => {
         this.setState({
             'currentCategory': category
         });
@@ -19,9 +43,16 @@ class MovieListContainer extends Component {
 
     render() {
         return (
-            <div className="background">
+            <div className="background" id="movie_list_container">
                 <Navbar category={this.state.currentCategory} onCategoryClick={ this.handleNavbarClick}/>
-                <div className="movie-count">39 film listed</div>
+                <div className="movie-count"><b>{this.state.totalMovieAmount}</b> film listed</div>
+                <div className={'movie-list-container'}>
+                {
+                    this.state.movies.map(movie =>
+                        <MovieCard key={movie.id} id={movie.id} movie={movie}/>
+                    )
+                }
+                </div>
             </div>
         )
     }

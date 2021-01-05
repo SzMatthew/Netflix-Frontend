@@ -2,11 +2,25 @@
 
 .background{
     background-color: $dark-grey;
-    padding: 10px $side-padding;
-    height: fit-content;
+    padding         : 10px $side-padding;
+    height          : fit-content;
 
     .movie-count{
-        color: $white;
+        color : $white;
         margin: 20px 0px;
+    }
+
+    .movie-list-container{
+        list-style:none;
+        width: 100%;
+        justify-content: space-between; 
+
+        &:after{
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
     }
 }
