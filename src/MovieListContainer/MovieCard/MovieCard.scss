@@ -1,11 +1,17 @@
 @import "../../GlobalStyle.scss";
 
+$card-width: 250px;
+
 .card-container{
-    width: 250px;
+    width: $card-width;
     float: left;
     margin: 20px 20px 20px 0px;
     cursor: pointer;
     
+    .image-container{
+        width: 100%;
+        height: $card-width / 2 * 3;
+    }
 
     img{
         width: 100%;

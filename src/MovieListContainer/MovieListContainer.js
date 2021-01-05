@@ -20,7 +20,7 @@ class MovieListContainer extends Component {
     
     getMovies = () =>
     { 
-        fetch('http://localhost:4000/movies?offset=' + this.state.offset)
+        fetch('http://localhost:4000/movies?offset=' + (this.state.offset === 0 ? 0 : this.state.offset + 1))
             .then(res => res.json())
             .then(
                 (result) =>
@@ -44,9 +44,11 @@ class MovieListContainer extends Component {
     render() {
         return (
             <div className="background" id="movie_list_container">
-                <Navbar category={this.state.currentCategory} onCategoryClick={ this.handleNavbarClick}/>
+                <Navbar category={this.state.currentCategory} onCategoryClick={this.handleNavbarClick} />
+                
                 <div className="movie-count"><b>{this.state.totalMovieAmount}</b> film listed</div>
-                <div className={'movie-list-container'}>
+                
+                <div className='movie-list-container'>
                 {
                     this.state.movies.map(movie =>
                         <MovieCard key={movie.id} id={movie.id} movie={movie}/>
