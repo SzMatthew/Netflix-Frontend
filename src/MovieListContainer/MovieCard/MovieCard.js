@@ -1,11 +1,11 @@
 import React from 'react';
 import './MovieCard.scss';
 
-const MovieCard = ({ id, movie }) =>
+const MovieCard = ({ movie }) =>
 {
-    const openMovie = () => console.log('clicked', id);
+    const openMovie = () => console.log('clicked', movie.id);
 
-    let releaseDate = movie.release_date.split('-')[0];
+    const releaseDate = movie.release_date.split('-')[0];
 
     return (
         <div className='card-container' onClick={openMovie}>
