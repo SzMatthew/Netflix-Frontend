@@ -2,7 +2,7 @@ import './GlobalStyle.scss';
 import Header from './Header/Header';
 import MovieListContainer from './MovieListContainer/MovieListContainer';
 
-function App() {
+const App = () => {
   return (
     <div>
       <Header />
