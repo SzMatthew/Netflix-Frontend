@@ -1,39 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './MovieCard.scss';
 
-class MovieCard extends Component
+const MovieCard = ({ movie }) =>
 {
-    OpenMovie = id =>
-    { 
-        console.log('clicked', id);
-    }
+    const openMovie = () => console.log('clicked', movie.id);
 
-    render ()
-    {
-        let release_date = this.props.movie.release_date.split('-')[0];
+    const releaseDate = movie.release_date.split('-')[0];
 
-        return (
-            <div className='card-container' onClick={this.OpenMovie.bind(this, this.props.movie.id)}>
-                <div className="image-container"><img src={this.props.movie.poster_path} alt={this.props.movie.title} /></div>
-                <div className='movie-infos'>
-                    <div>
-                        <span className='title'>
-                            {this.props.movie.title}
-                        </span>
-                        <div className="release-date">
-                            {release_date}
-                        </div>
-                    </div>
-                    <span className='genre'>
-                        {
-                            this.props.movie.genres.map(
-                                (genre, i) => i === this.props.movie.genres.length - 1 ? genre : genre + ', ')
-                        }
+    return (
+        <div className='card-container' onClick={openMovie}>
+            <div className="image-container"><img src={movie.poster_path} alt={movie.title} /></div>
+            <div className='movie-infos'>
+                <div>
+                    <span className='title'>
+                        {movie.title}
                     </span>
+                    <div className="release-date">
+                        {releaseDate}
+                    </div>
                 </div>
+                <span className='genre'>
+                    {
+                        movie.genres.map((genre, i) => i === movie.genres.length - 1 ? genre : genre + ', ')
+                    }
+                </span>
             </div>
-        )
-    }
+        </div>
+    );
 }
 
 export default MovieCard;
