@@ -1,11 +1,4 @@
-$red       : #F65261;
-$mid-grey  : #424242;
-$dark-grey : #232323;
-$light-grey: #555555;
-$white     : #FFFFFF;
-$side-padding: 50px;
-$button-width: 200px;
-$border-radius: 5px;
+@import "./Variables.scss";
 
 *{
     padding: 0px;
