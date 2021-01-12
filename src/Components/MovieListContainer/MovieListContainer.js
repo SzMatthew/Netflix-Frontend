@@ -1,7 +1,9 @@
-import React, { useState, useEffect}from 'react';
-import MovieCard from './MovieCard/MovieCard';
-import Navbar from './Navbar/Navbar';
+import React, { useState, useEffect } from 'react';
+import MovieCard from '../MovieCard/MovieCard';
+import Navbar from '../Navbar/Navbar';
+import {CategoryContext} from '../../Contexts/category-context';
 import './MovieListContainer.scss';
+
 
 const MovieListContainer = () => { 
     const [currentCategory, setCurrentCategory]   = useState('ALL');
@@ -25,7 +27,9 @@ const MovieListContainer = () => {
 
     return (
         <div className="background" id="movie_list_container">
-            <Navbar category={currentCategory} onCategoryClick={handleNavbarClick} />
+            <CategoryContext.Provider value={ currentCategory }>
+                <Navbar onCategoryClick={handleNavbarClick} />
+            </CategoryContext.Provider>
             <div className="movie-count"><b>{totalMovieAmount}</b> film listed</div>
             <div className='movie-list-container'>
             {

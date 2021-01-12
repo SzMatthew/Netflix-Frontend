@@ -1,6 +1,6 @@
 import './GlobalStyle.scss';
-import Header from './Header/Header';
-import MovieListContainer from './MovieListContainer/MovieListContainer';
+import Header from './Components/Header/Header';
+import MovieListContainer from './Components/MovieListContainer/MovieListContainer';
 
 const App = () => {
   return (
