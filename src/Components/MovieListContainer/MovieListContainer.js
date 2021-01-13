@@ -1,40 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
+import {useCategory} from '../../Contexts/category-context';
 import MovieCard from '../MovieCard/MovieCard';
 import Navbar from '../Navbar/Navbar';
-import {CategoryContext} from '../../Contexts/category-context';
 import './MovieListContainer.scss';
 
 
 const MovieListContainer = () => { 
-    const [currentCategory, setCurrentCategory]   = useState('ALL');
+    const {state: {category}}  = useCategory();
     const [movies, setMovies]                     = useState([]);
     const [totalMovieAmount, setTotalMovieAmount] = useState(0);
 
-    useEffect(() => getMovies(), []);
+    // eslint-disable-next-line
+    useEffect(() => getMovies(), [category]);
 
     const getMovies = () => { 
-        fetch('http://localhost:4000/movies')
+        fetch('http://localhost:4000/movies?limit=60&filter=' + (category === 'ALL' ? '' : category.toLowerCase()))
             .then(res => res.json())
             .then(
-                (result) => {
-                    setMovies(result.data);
-                    setTotalMovieAmount(result.totalAmount);
+                ({data}) => {
+                    setMovies(data);
+                    setTotalMovieAmount(data.length);
                 }
             );
     }
 
-    const handleNavbarClick = category => setCurrentCategory(category);
 
     return (
         <div className="background" id="movie_list_container">
-            <CategoryContext.Provider value={ currentCategory }>
-                <Navbar onCategoryClick={handleNavbarClick} />
-            </CategoryContext.Provider>
+            <Navbar/>
             <div className="movie-count"><b>{totalMovieAmount}</b> film listed</div>
             <div className='movie-list-container'>
             {
-                movies.map(movie =>
-                    <MovieCard key={movie.id} movie={movie}/>
+                    movies.map(movie => 
+                        < MovieCard key = {movie.id} movie = {movie} />
                 )
             }
             </div>
