@@ -1,6 +1,6 @@
-import React, { useContext, useMemo, useReducer } from 'react';
+import React, { useContext, useMemo, useReducer, createContext } from 'react';
 
-const CategoryContext = React.createContext();
+const CategoryContext = createContext();
 
 const categoryReducer = (state, action) => {
     switch (action.type)
@@ -27,7 +27,11 @@ const useCategory = () => {
     }
     const [state, dispatch] = context;
 
-    const setCategory = (category) => dispatch({type: 'SET_CATEGORY', payload: category});
+    const setCategory = (category) => { 
+        if (state.category !== category){
+            dispatch({type: 'SET_CATEGORY', payload: category});
+        }
+    }
 
     return {
         state,

@@ -12,6 +12,7 @@
         .logo{
             color: $red;
             font-size: 18px;
+            cursor: default;
         }
     }
 
@@ -22,13 +23,12 @@
         h2{
             color: $white;
             margin: 60px 0px;
+            cursor: default;
         }
 
         .search-input{
             display: grid;
-            grid-template-columns: auto $button-width;
-            gap: 10px;
-
+            width: 80%;
         }
     }
     

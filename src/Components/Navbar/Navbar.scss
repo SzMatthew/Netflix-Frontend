@@ -26,6 +26,10 @@ nav{
             padding      : 15px 8px;
             transition   : 0.3s;
             border-radius: $border-radius;
+
+            .orderBy-select{
+                margin-left: 10px;
+            }
         }
     }
     

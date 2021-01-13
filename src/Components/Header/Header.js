@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSearch} from '../../Contexts/search-context'
 import './Header.scss';
 
 const Header = () => { 
+    const {setSearch} = useSearch();
+
     return (
         <div className="header-container">
             <div className="top-nav">
@@ -11,8 +14,7 @@ const Header = () => {
             <div className="search-container">
                 <h2>FIND YOUR MOVIE</h2>
                 <div className="search-input">
-                    <input type="text" placeholder="What do you want to watch?"/>
-                    <button className="red">SEARCH</button>
+                    <input type="text" placeholder="What do you want to watch?" onChange={ (event) => setSearch(event.target.value)}/>
                 </div>
             </div>
         </div>
