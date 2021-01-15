@@ -28,32 +28,20 @@ const MovieListContainer = () => {
             );
     }
 
-    const NoMovieWarning = () => { 
-        if (movies.length === 0)
-        {
-            return (
-                <div className="warning-row">
-                    There is no movie to list!
-                </div>
-            )
-        }
-        return;
-    }
-
-
     return (
-        <div className="background">
+        <main>
             <Navbar/>
-            <div className="movie-count"><b>{totalMovieAmount}</b> film listed</div>
-            <div className='movie-list-container'>
+            <section className="movie-count"><b>{totalMovieAmount}</b> film listed</section>
+            <section className='movie-list-container'>
             {
-                movies.map(movie => 
-                    < MovieCard key = {movie.id} movie = {movie} />
-                )
+                (movies.length === 0)?
+                <div className="warning-row">
+                        There is no movie to list!
+                </div>:
+                movies.map(movie => < MovieCard key = {movie.id} movie = {movie}/>)
             }
-            {NoMovieWarning()}
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }
 

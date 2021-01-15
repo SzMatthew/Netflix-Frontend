@@ -1,9 +1,9 @@
 @import "../../Variables.scss";
 
-.header-container{
+header{
     background-color: $mid-grey;
     padding: 20px $side-padding;
-    height: 300px;
+    height: $header-height;
 
     .top-nav{
         display: flex;
@@ -18,11 +18,11 @@
 
     .search-container{
         width: 85%;
-        margin: auto;
+        margin: 60px auto;
 
         h2{
             color: $white;
-            margin: 60px 0px;
+            margin-bottom: 60px;
             cursor: default;
         }
 

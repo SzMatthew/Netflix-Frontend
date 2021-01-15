@@ -1,9 +1,9 @@
 @import "../../Variables.scss";
 
-.background{
+main{
     background-color: $dark-grey;
     padding         : 10px $side-padding;
-    min-height      : calc(100vh - 300px);
+    min-height      : $main-height;
 
     .movie-count{
         color : $white;
