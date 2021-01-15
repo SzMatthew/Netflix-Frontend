@@ -7,8 +7,7 @@ import {SearchProvider} from './Contexts/search-context';
 
 const App = () => {
   return (
-    <div style={{height: "100%"}}>
-      <CategoryProvider>
+      <CategoryProvider style={{height: "100%"}}>
         <OrderByProvider>
           <SearchProvider>
             <Header />
@@ -16,7 +15,6 @@ const App = () => {
           </SearchProvider>
         </OrderByProvider>
       </CategoryProvider>
-    </div>
   );
 }
 
