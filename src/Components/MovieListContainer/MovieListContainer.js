@@ -38,7 +38,6 @@ const MovieListContainer = () => {
             )
         }
         return;
-       
     }
 
 

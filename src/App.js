@@ -7,7 +7,7 @@ import {SearchProvider} from './Contexts/search-context';
 
 const App = () => {
   return (
-    <div>
+    <div style={{height: "100%"}}>
       <CategoryProvider>
         <OrderByProvider>
           <SearchProvider>
