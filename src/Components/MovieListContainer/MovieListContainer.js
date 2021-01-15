@@ -5,6 +5,7 @@ import {useSearch} from '../../Contexts/search-context';
 import MovieCard from '../MovieCard/MovieCard';
 import Navbar from '../Navbar/Navbar';
 import './MovieListContainer.scss';
+import notFoundSVG from '../../Images/empty.svg';
 
 
 const MovieListContainer = () => { 
@@ -28,17 +29,24 @@ const MovieListContainer = () => {
             );
     }
 
+    const NoMovieToList = () => { 
+        return (
+            <div className="warning-row">
+                <p>There is no movie to list!</p>
+                <img src={notFoundSVG} alt="Not Found"/>
+            </div>
+        );
+    }
+
     return (
         <main>
             <Navbar/>
             <section className="movie-count"><b>{totalMovieAmount}</b> film listed</section>
             <section className='movie-list-container'>
             {
-                (movies.length === 0)?
-                <div className="warning-row">
-                        There is no movie to list!
-                </div>:
-                movies.map(movie => < MovieCard key = {movie.id} movie = {movie}/>)
+                (movies.length === 0)
+                    ? <NoMovieToList />
+                    : movies.map(movie => < MovieCard key = {movie.id} movie = {movie}/>)
             }
             </section>
         </main>
