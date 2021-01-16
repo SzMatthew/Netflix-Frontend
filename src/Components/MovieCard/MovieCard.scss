@@ -20,14 +20,18 @@ $card-width: 250px;
     }
 
     .movie-infos{
+        position: relative;
         margin-top: 15px;
+        height: 65px;
 
         .title{
             color: $white;
+            max-width: 150px;
             opacity: 0.8;
             font-size: 16px;
             float: left;
             justify-self: center;
+            overflow-wrap: break-word
         }
     
         .release-date{
@@ -41,8 +45,9 @@ $card-width: 250px;
         }   
 
         .genre{
-            float: left;
-            margin-top: 10px;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
             color: $white;
             opacity: 0.6;
             font-size: 13px;

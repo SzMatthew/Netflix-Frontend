@@ -6,3 +6,5 @@ $white     : #FFFFFF;
 $side-padding: 50px;
 $button-width: 200px;
 $border-radius: 5px;
+$header-height: 350px;
+$main-height: calc(100vh - #{$header-height});
