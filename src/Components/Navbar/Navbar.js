@@ -1,6 +1,7 @@
 import React from 'react';
 import {useCategory} from '../../Contexts/category-context';
 import {useOrderBy} from '../../Contexts/order-by-context';
+import {Link} from "react-router-dom"
 import './Navbar.scss';
 
 const Navbar = () => { 
@@ -14,11 +15,11 @@ const Navbar = () => {
     return (
         <nav>
             <ul>
-                <li className={category === 'ALL' ? 'active' : ''} onClick={() => setCategory('ALL')}>ALL</li>
-                <li className={category === 'DOCUMENTARY' ? 'active' : '' } onClick={() => setCategory('DOCUMENTARY')}>DOCUMENTARY</li>
-                <li className={category === 'COMEDY' ? 'active' : ''} onClick={() => setCategory('COMEDY')}>COMEDY</li>
-                <li className={category === 'HORROR' ? 'active' : ''} onClick={() => setCategory('HORROR')}>HORROR</li>
-                <li className={category === 'CRIME' ? 'active' : ''} onClick={() => setCategory('CRIME')}>CRIME</li>
+                <li className={category === '' ? 'active' : ''} onClick={() => setCategory('ALL')}><Link to="/">ALL</Link></li>
+                <li className={category === 'DOCUMENTARY' ? 'active' : '' } onClick={() => setCategory('DOCUMENTARY')}><Link to="/documentary">DOCUMENTARY</Link></li>
+                <li className={category === 'COMEDY' ? 'active' : ''} onClick={() => setCategory('COMEDY')}><Link to="/comedy">COMEDY</Link></li>
+                <li className={category === 'HORROR' ? 'active' : ''} onClick={() => setCategory('HORROR')}><Link to="/horror">HORROR</Link></li>
+                <li className={category === 'CRIME' ? 'active' : ''} onClick={() => setCategory('CRIME')}><Link to="/crime">CRIME</Link></li>
             </ul>
             <ul>
                 <li>

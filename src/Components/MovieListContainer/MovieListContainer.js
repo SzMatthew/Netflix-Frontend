@@ -6,14 +6,18 @@ import MovieCard from '../MovieCard/MovieCard';
 import Navbar from '../Navbar/Navbar';
 import './MovieListContainer.scss';
 import notFoundSVG from '../../Images/empty.svg';
+import {useLocation} from 'react-router-dom';
 
 
 const MovieListContainer = () => { 
-    const {state: {category}}                     = useCategory();
+    const {state: {category}, setCategory}        = useCategory();
     const {state: {orderBy}}                      = useOrderBy();
     const {state: {searchWord}}                   = useSearch();
     const [movies, setMovies]                     = useState([]);
     const [totalMovieAmount, setTotalMovieAmount] = useState(0);
+    const location                                = useLocation();
+    
+    setCategory(location.pathname.replace('/', '').toUpperCase());
 
     // eslint-disable-next-line
     useEffect(() => getMovies(), [category, orderBy, searchWord]);
