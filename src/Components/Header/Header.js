@@ -8,9 +8,9 @@ import './Header.scss';
 import {Link} from 'react-router-dom';
 
 const Header = () => { 
-    const {setSearch} = useSearch();
-    const {state: {category}}        = useCategory();
-    const idQueryParam = useQuery().get('id');
+    const {setSearch}         = useSearch();
+    const {state: {category}} = useCategory();
+    const idQueryParam        = useQuery().get('id');
 
     if(idQueryParam) {
         return (

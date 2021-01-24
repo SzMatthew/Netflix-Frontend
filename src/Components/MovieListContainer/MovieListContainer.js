@@ -11,23 +11,22 @@ import { useQuery } from '../../hooks/useQuery';
 
 const MovieListContainer = () => {
     const {state: {category}, setCategory}        = useCategory();
-    const {state: {orderBy}}                      = useOrderBy();
+    const {state: {orderBy}, setOrderBy}          = useOrderBy();
     const {state: {searchWord}}                   = useSearch();
     const [movies, setMovies]                     = useState([]);
     const [totalMovieAmount, setTotalMovieAmount] = useState(0);
+    const categoryQueryParam                      = useQuery().get('category');
+    const idQueryParam                            = useQuery().get('id');
+    const orderByQueryParam                       = useQuery().get('orderBy');
 
-    const categoryQueryParam = useQuery().get('category');
-    const idQueryParam = useQuery().get('id');
-
-    useEffect(() => {
-        setCategory(categoryQueryParam === 'all' ? '' : categoryQueryParam);
-    }, [categoryQueryParam]);
+    useEffect(() => setCategory(categoryQueryParam), [categoryQueryParam]);
+    useEffect(() => setOrderBy(orderByQueryParam), [orderByQueryParam]);
 
     // eslint-disable-next-line
     useEffect(() => getMovies(), [category, orderBy, searchWord]);
 
     const getMovies = () => { 
-        fetch('http://localhost:4000/movies?limit=100&filter=' + category + `&sortBy=${orderBy}&sortOrder=desc&search=${searchWord}&searchBy=title`)
+        fetch('http://localhost:4000/movies?limit=100&filter=' + (category === 'all' ? '' : category) + `&sortBy=${orderBy}&sortOrder=desc&search=${searchWord}&searchBy=title`)
             .then(res => res.json())
             .then(
                 ({data}) => {
@@ -48,20 +47,20 @@ const MovieListContainer = () => {
 
     return (
         <>
-        {idQueryParam
-            ? <MovieDetails /> 
-            : <></>
-        }
-        <main>
-            <Navbar/>
-            <section className="movie-count"><b>{totalMovieAmount}</b> film listed</section>
-            <section className='movie-list-container'>
-                {
-                    (movies.length === 0)
-                        ? <NoMovieToList />
-                        : movies.map(movie => <MovieCard key={movie.id} movie={movie} />)
-                }
-            </section>
+            {idQueryParam
+                ? <MovieDetails /> 
+                : <></>
+            }
+            <main>
+                <Navbar/>
+                <section className="movie-count"><b>{totalMovieAmount}</b> film listed</section>
+                <section className='movie-list-container'>
+                    {
+                        (movies.length === 0)
+                            ? <NoMovieToList />
+                            : movies.map(movie => <MovieCard key={movie.id} movie={movie} />)
+                    }
+                </section>
             </main>
         </>
     );

@@ -15,7 +15,7 @@ const App = () => {
           <SearchProvider>
             <Switch>
               <Route exact path="/">
-                <Redirect to="/movies?category=all" />
+                <Redirect to="/movies?category=all&orderBy=release_date" />
               </Route>
               <Route path="/movies">
                 <Header />

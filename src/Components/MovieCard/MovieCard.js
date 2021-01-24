@@ -1,14 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {useCategory} from '../../Contexts/category-context';
+import {useOrderBy} from '../../Contexts/order-by-context';
 import './MovieCard.scss';
 
 const MovieCard = ({ movie }) => {
-    const releaseDate = movie.release_date.split('-')[0];
+    const releaseDate         = movie.release_date.split('-')[0];
     const {state: {category}} = useCategory();
+    const {state: {orderBy}}  = useOrderBy();
 
     return (
-        <Link to={`/movies?category=${category}&id=${movie.id}`}>
+        <Link to={`/movies/?category=${category}&id=${movie.id}&orderBy=${orderBy}`}>
             <div className='card-container'>
                 <div className="image-container"><img src={movie.poster_path} alt={movie.title} /></div>
                 <div className='movie-infos'>
