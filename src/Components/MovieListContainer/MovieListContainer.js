@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { Switch, Route } from 'react-router-dom';
 import {useCategory} from '../../Contexts/category-context';
 import {useOrderBy} from '../../Contexts/order-by-context';
 import {useSearch} from '../../Contexts/search-context';

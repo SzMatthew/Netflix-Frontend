@@ -1,0 +1,48 @@
+@import "../../Variables.scss";
+
+.page-not-found-container{
+    height: 100vh;
+    color: $white;
+    position: relative;
+
+    .content-container{
+        position: absolute;
+        margin: auto;
+        top: 20%;
+        width: calc(100% - #{$side-padding}*2);
+        text-align: center;
+
+        h2{
+            letter-spacing: 1px;
+            font-size: 40px;
+            font-weight: 200;
+            opacity: 0.8;
+            margin: 0px 0px 50px 0px;
+            cursor: default;
+        }
+
+        img{
+            width: 35%;
+
+            @media only screen and (max-width: $small-screen) {
+                width: 90%;
+            }
+
+            @media only screen and (max-width: $medium-screen){
+                width: 60%;
+            }
+        }
+
+        button{
+            display: block;
+            margin: 50px auto;
+
+            a{
+                text-decoration: none;
+                color: $red;
+            }
+            
+        }
+    }
+    
+}

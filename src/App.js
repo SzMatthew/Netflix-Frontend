@@ -1,6 +1,7 @@
 import './GlobalStyle.scss';
 import Header from './Components/Header/Header';
 import MovieListContainer from './Components/MovieListContainer/MovieListContainer';
+import RoutingErrorPage from './Components/404Page/RoutingErrorPage';
 import {CategoryProvider} from './Contexts/category-context';
 import {OrderByProvider} from './Contexts/order-by-context';
 import {SearchProvider} from './Contexts/search-context';
@@ -21,9 +22,7 @@ const App = () => {
                 <MovieListContainer />
               </Route>
               <Route>
-                <div>
-                  <h1>404 | Not Found</h1>
-                </div>
+                <RoutingErrorPage/>
               </Route>
             </Switch>
           </SearchProvider>
