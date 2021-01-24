@@ -1,82 +1,43 @@
-import React, {useEffect, useState} from 'react';
-import {Route, Router, Switch, useParams} from 'react-router-dom';
-import { useSearch} from '../../Contexts/search-context'
+import React from 'react';
+import {useSearch} from '../../Contexts/search-context'
+import {BsSearch} from 'react-icons/bs';
+import {IconContext} from "react-icons";
+import {useQuery} from '../../hooks/useQuery';
+import {useCategory} from '../../Contexts/category-context';
 import './Header.scss';
+import {Link} from 'react-router-dom';
 
 const Header = () => { 
     const {setSearch} = useSearch();
-    const [movie, setMovie] = useState(null);
-    const {id} = useParams();
-    
-    useEffect(() => {
-        getMovie();
-     }, []);
+    const {state: {category}}        = useCategory();
+    const idQueryParam = useQuery().get('id');
 
-    const getMovie = () => { 
-        fetch('http://localhost:4000/movies/' + 383498)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setMovie(result);
-                }
-            );
-    }
-
-    const SearchHeader = () => { 
+    if(idQueryParam) {
         return (
-            <header className="search-header">
-                <div className="top-nav">
-                    <span className="logo"><b>netflix</b>roulette</span>
-                    <button className="add-movie">ADD MOVIE</button>
-                </div>
-                <section className="search-container">
-                    <h2>FIND YOUR MOVIE</h2>
-                    <div className="search-input">
-                        <input type="text" placeholder="What do you want to watch?" onChange={ (event) => setSearch(event.target.value)}/>
-                    </div>
-                </section>
-            </header>
+            <div className="top-nav">
+                <span className="logo"><b>netflix</b>roulette</span>
+                <IconContext.Provider value={{className: "search-icon"}}>
+                    <Link to={`?category=${category}`}>
+                        <BsSearch />
+                    </Link>
+                </IconContext.Provider>
+            </div>
         );
     }
 
-    const MovieHeader = () => {
-        if (movie !== null)
-        {
-            return (
-                <header className="movie-header">
-                    <div className="top-nav">
-                        <span className="logo"><b>netflix</b>roulette</span>
-
-                    </div>
-                    <div className="movie-container">
-                        <img src={movie.poster_path} alt={movie.title}></img>
-                        <div className="details">
-                            <div className="title-score-container">
-                                <h2>{movie.title}</h2>
-                                <div className="score">
-                                    <span>{movie.vote_average}</span>
-                                </div>
-                            </div>
-                            <div className="tagline">
-                                <span>{movie.tagline}</span>
-                            </div>
-                            <div className="date-minutes-container">
-                                <span>{movie.release_date.split('-')[0]}</span>
-                                <span className="runtime">{movie.runtime} min</span>
-                            </div>
-                            <div className="overview">
-                                <p>{movie.overview}</p>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-            );
-        }
-        return <div></div>;
-     }
-
     return (
-        <MovieHeader/>
+        <header className="search-header">
+            <div className="top-nav">
+                <span className="logo"><b>netflix</b>roulette</span>
+                <button className="add-movie">ADD MOVIE</button>
+            </div>
+            <section className="search-container">
+                <h2>FIND YOUR MOVIE</h2>
+                <div className="search-input">
+                    <input type="text" placeholder="What do you want to watch?" onChange={ (event) => setSearch(event.target.value)}/>
+                </div>
+            </section>
+        </header>
     );
 }
 

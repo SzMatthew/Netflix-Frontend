@@ -1,31 +1,27 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+import {useCategory} from '../../Contexts/category-context';
 import './MovieCard.scss';
 
-const MovieCard = ({ movie }) =>
-{
-    const openMovie = () => console.log('clicked', movie.id);
-
+const MovieCard = ({ movie }) => {
     const releaseDate = movie.release_date.split('-')[0];
+    const {state: {category}} = useCategory();
 
     return (
-        <div className='card-container' onClick={openMovie}>
-            <div className="image-container"><img src={movie.poster_path} alt={movie.title} /></div>
-            <div className='movie-infos'>
-                <div>
-                    <span className='title'>
-                        {movie.title}
-                    </span>
-                    <div className="release-date">
-                        {releaseDate}
+        <Link to={`/movies?category=${category}&id=${movie.id}`}>
+            <div className='card-container'>
+                <div className="image-container"><img src={movie.poster_path} alt={movie.title} /></div>
+                <div className='movie-infos'>
+                    <div>
+                        <span className='title'>{movie.title}</span>
+                        <div className="release-date">{releaseDate}</div>
                     </div>
+                    <span className='genre'>
+                        {movie.genres.map((genre, i) => (i === movie.genres.length - 1) ? genre : genre + ', ')}
+                    </span>
                 </div>
-                <span className='genre'>
-                    {
-                        movie.genres.map((genre, i) => i === movie.genres.length - 1 ? genre : genre + ', ')
-                    }
-                </span>
             </div>
-        </div>
+        </Link>
     );
 }
 

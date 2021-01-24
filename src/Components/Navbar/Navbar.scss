@@ -10,12 +10,18 @@ nav{
         border-bottom-right-radius: 0px;
      }
 
-     :first-child > li:hover {
-        background-color: $mid-grey;
+     :first-child { 
+        li:hover {
+            background-color: $mid-grey;
 
-        > a {
-            color: $red;
+            a {
+                color: $red;
+            }
         }
+     }
+
+     :last-child{
+         margin: 0px;
      }
 
     ul{

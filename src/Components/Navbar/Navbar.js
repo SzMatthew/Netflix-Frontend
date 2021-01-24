@@ -1,30 +1,23 @@
 import React from 'react';
-import {useCategory} from '../../Contexts/category-context';
-import {useOrderBy} from '../../Contexts/order-by-context';
-import {Link, useHistory} from "react-router-dom"
+import { useCategory } from '../../Contexts/category-context';
+import { useOrderBy } from '../../Contexts/order-by-context';
+import { Link } from "react-router-dom"
 import './Navbar.scss';
 
 const Navbar = () => { 
     const {state: {category}, setCategory} = useCategory();
-    const {setOrderBy} = useOrderBy();
-
-    const changeOrderBy = (event) => { 
-        setOrderBy(event.target.value);
-    }
-
-    const navbarClick = category => { 
-        setCategory(category);
-        //history.push('/' + String(category).toLowerCase());
-    }
+    const { setOrderBy } = useOrderBy();
+    const changeOrderBy = event => setOrderBy(event.target.value)
+    const navbarClick = category => setCategory(category)
 
     return (
         <nav>
             <ul>
-                <li className={category === '' ? 'active' : ''} onClick={navbarClick.bind(this,'ALL')}><Link to="/">ALL</Link></li>
-                <li className={category === 'DOCUMENTARY' ? 'active' : '' } onClick={navbarClick.bind(this, 'DOCUMENTARY')}><Link to="/documentary">DOCUMENTARY</Link></li>
-                <li className={category === 'COMEDY' ? 'active' : ''} onClick={navbarClick.bind(this, 'COMEDY')}><Link to="/comedy">COMEDY</Link></li>
-                <li className={category === 'HORROR' ? 'active' : ''} onClick={navbarClick.bind(this, 'HORROR')}><Link to="/horror">HORROR</Link></li>
-                <li className={category === 'CRIME' ? 'active' : ''} onClick={navbarClick.bind(this, 'CRIME')}><Link to="/crime">CRIME</Link></li>
+                <li className={category === 'all' ? 'active' : ''} onClick={navbarClick.bind(this,'all')}><Link to="/movies?category=all">ALL</Link></li>
+                <li className={category === 'documentary' ? 'active' : '' } onClick={navbarClick.bind(this, 'documentary')}><Link to="/movies?category=documentary">DOCUMENTARY</Link></li>
+                <li className={category === 'comedy' ? 'active' : ''} onClick={navbarClick.bind(this, 'comedy')}><Link to="/movies?category=comedy">COMEDY</Link></li>
+                <li className={category === 'horror' ? 'active' : ''} onClick={navbarClick.bind(this, 'horror')}><Link to="/movies?category=horror">HORROR</Link></li>
+                <li className={category === 'crime' ? 'active' : ''} onClick={navbarClick.bind(this, 'crime')}><Link to="/movies?category=crime">CRIME</Link></li>
             </ul>
             <ul>
                 <li>
