@@ -2,12 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {useCategory} from '../../Contexts/category-context';
 import {useOrderBy} from '../../Contexts/order-by-context';
 import {useSearch} from '../../Contexts/search-context';
+import { useQuery } from '../../hooks/useQuery';
 import MovieCard from '../MovieCard/MovieCard';
 import Navbar from '../Navbar/Navbar';
 import MovieDetails from '../MovieDetails/MovieDetails';
-import './MovieListContainer.scss';
 import notFoundSVG from '../../Images/empty.svg';
-import { useQuery } from '../../hooks/useQuery';
+import './MovieListContainer.scss';
+
 
 const MovieListContainer = () => {
     const {state: {category}, setCategory}        = useCategory();

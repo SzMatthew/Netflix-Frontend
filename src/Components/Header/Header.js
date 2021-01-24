@@ -1,11 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {useSearch} from '../../Contexts/search-context'
 import {BsSearch} from 'react-icons/bs';
 import {IconContext} from "react-icons";
 import {useQuery} from '../../hooks/useQuery';
 import {useCategory} from '../../Contexts/category-context';
 import './Header.scss';
-import {Link} from 'react-router-dom';
 
 const Header = () => { 
     const {setSearch}         = useSearch();
