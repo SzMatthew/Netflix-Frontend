@@ -9,7 +9,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 const App = () => {
   return (
-      <CategoryProvider style={{height: "100%"}}>
+    <CategoryProvider className="App">
         <OrderByProvider>
           <SearchProvider>
             <Switch>

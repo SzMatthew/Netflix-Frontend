@@ -1,0 +1,89 @@
+@import "../../Variables.scss";
+
+.modal-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background-image: url(../../Images/blured_background.jpg);
+}
+
+.modal{
+    $width: 800px;
+
+    margin: 60px auto;
+    width: $width;
+    border-radius: $border-radius;
+    border: none;
+    outline: none;
+    background-color: $dark-grey;
+    padding: 20px 80px;
+
+    header{
+        display: flex;
+        justify-content: space-between;
+
+        h2{
+            color: $white;
+            opacity: 0.9;
+            font-size: 33px;
+            font-weight: 100;
+            letter-spacing: 1px;
+            margin: 10px 0px;
+        }
+
+        .close-icon{
+            color: $white;
+            opacity: 0.6;
+            font-size: 32px;
+            transition: 0.3s;
+            cursor: pointer;
+
+            &:hover{
+                transform: scale(1.2);
+                opacity: 0.8;
+                color: $red;
+            }
+        }
+    }
+
+    label{
+        display: block;
+        color: $red;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .movieId{
+        color: $white;
+        opacity: 0.7;
+        font-weight: 400;
+        font-size: 17px;
+    }
+
+    input{
+        width: 100%;
+    }
+
+    footer{
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .error-message{
+        padding: 5px 10px;
+        color: $red;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    select{
+        width: 100%;
+    }
+}

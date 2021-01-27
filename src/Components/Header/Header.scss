@@ -1,50 +1,50 @@
 @import "../../Variables.scss";
 
 .search-header{
-    background-color: $mid-grey;
-    padding: 20px $side-padding;
-    height: $header-height;
+    background-image: url(../../Images/blured_background.jpg);
+    padding         : 20px $side-padding;
+    height          : $header-height;
 
     .top-nav{
         display: flex;
         justify-content: space-between;
 
         .logo{
-            color: $red;
+            color    : $red;
             font-size: 18px;
-            cursor: default;
+            cursor   : default;
         }
     }
 
     .search-container{
-        width: 85%;
+        width : 85%;
         margin: 60px auto;
 
         h2{
-            color: $white;
+            color        : $white;
             margin-bottom: 45px;
-            cursor: default;
+            cursor       : default;
         }
 
         .search-input{
             display: grid;
-            width: 80%;
+            width  : 80%;
         }
     }
 }
 
 .small-top-nav{
     background-color: $darkest-grey;
-    padding: 20px $side-padding;
-    display: flex;
-    justify-content: space-between;
+    padding         : 20px $side-padding;
+    display         : flex;
+    justify-content : space-between;
 
     .search-icon{
-        color: $red;
-        font-size: 25px;
+        color     : $red;
+        font-size : 25px;
         transition: 0.3s;
-        margin: 0px 60px;
-        cursor: pointer;
+        margin    : 0px 60px;
+        cursor    : pointer;
 
         &:hover{
             transform: scale(1.2);
