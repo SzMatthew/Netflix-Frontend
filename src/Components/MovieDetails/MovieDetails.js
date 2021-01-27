@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useQuery} from '../../hooks/useQuery';
-
+import {useParams} from 'react-router-dom';
 import './MovieDetails.scss';
 
 const MovieDetails = () => {
-    const MovieIDQueryParam = useQuery().get('id');
+    const {id} = useParams();
     const [movie, setMovie] = useState(null);
 
-    useEffect(() => getMovie(), [MovieIDQueryParam]);
+    useEffect(() => getMovie(), [id]);
 
     const getMovie = () => { 
-        fetch("http://localhost:4000/movies/" + MovieIDQueryParam)
+        fetch("http://localhost:4000/movies/" + id)
 			.then((res) => res.json())
 			.then((result) => {
 				setMovie(result);

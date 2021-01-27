@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import notFoundSVG from '../../Images/empty.svg';
 import './MovieListContainer.scss';
+import {useRouteMatch, Switch, Route} from 'react-router-dom';
 
 
 const MovieListContainer = () => {
@@ -17,7 +18,7 @@ const MovieListContainer = () => {
     const [movies, setMovies]                     = useState([]);
     const [totalMovieAmount, setTotalMovieAmount] = useState(0);
     const categoryQueryParam                      = useQuery().get('category');
-    const idQueryParam                            = useQuery().get('id');
+    const {path}                                  = useRouteMatch();
     const orderByQueryParam                       = useQuery().get('orderBy');
 
     useEffect(() => setCategory(categoryQueryParam), [categoryQueryParam]);
@@ -48,10 +49,11 @@ const MovieListContainer = () => {
 
     return (
         <>
-            {idQueryParam
-                ? <MovieDetails /> 
-                : <></>
-            }
+            <Switch>
+                <Route path={`${path}/:id`}>
+                    <MovieDetails/>
+                </Route>
+            </Switch>
             <main>
                 <Navbar/>
                 <section className="movie-count"><b>{totalMovieAmount}</b> film listed</section>
