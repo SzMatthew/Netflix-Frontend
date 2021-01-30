@@ -1,19 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
+import AddEditMovieForm from '../../Components/Add-EditMovieForm/AddEditMovieForm';
 import {Link, useRouteMatch} from 'react-router-dom';
 import {useCategory} from '../../Contexts/category-context';
 import {useOrderBy} from '../../Contexts/order-by-context';
+import {BsThreeDotsVertical, BsX} from 'react-icons/bs';
+import {IconContext} from "react-icons";
 import './MovieCard.scss';
 
-const MovieCard = ({ movie }) => {
-    const releaseDate         = movie.release_date.split('-')[0];
+const MovieCard = ({movie}) => {
+    const releaseDate = movie.release_date.split('-')[0];
     const {state: {category}} = useCategory();
-    const {state: {orderBy}}  = useOrderBy();
-    const {path}              = useRouteMatch();
+    const {state: {orderBy}} = useOrderBy();
+    const {path} = useRouteMatch();
+    const [optionsIsOpen, setOptionsIsOpen] = useState(false);
+    const [editMovieIsOpen, setEditMovieIsOpen] = useState(false);
 
     return (
+        <>
         <Link to={`${path}/${movie.id}?category=${category}&orderBy=${orderBy}`}>
             <div className='card-container'>
-                <div className="image-container"><img src={movie.poster_path} alt={movie.title} /></div>
+                <div className="image-container">
+                    <img src={movie.poster_path} alt={movie.title} />
+                    {
+                        optionsIsOpen
+                            ? <div className="options-dropdown">
+                                <div>
+                                    <IconContext.Provider value={{className: "close-icon"}}>
+                                        <BsX onClick={() => setOptionsIsOpen(false)}/>
+                                    </IconContext.Provider>
+                                </div>
+                                <p onClick={() => setEditMovieIsOpen(true)}>Edit</p>
+                                <p>Delete</p>
+                            </div>
+                            : <div className="options-icon-container">
+                                <IconContext.Provider value={{className: "options-icon"}}>
+                                    <BsThreeDotsVertical onClick={() => setOptionsIsOpen(true)}/>
+                                </IconContext.Provider>
+                            </div>
+                    }
+                </div>
                 <div className='movie-infos'>
                     <div>
                         <span className='title'>{movie.title}</span>
@@ -25,6 +50,8 @@ const MovieCard = ({ movie }) => {
                 </div>
             </div>
         </Link>
+        <AddEditMovieForm title={'EDIT MOVIE'} movieId={movie.id} isOpen={editMovieIsOpen} openModal={(isOpen) => setEditMovieIsOpen(isOpen)}/>
+        </>
     );
 }
 
