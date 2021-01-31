@@ -17,40 +17,41 @@ const MovieCard = ({movie}) => {
 
     return (
         <>
-        <Link to={`${path}/${movie.id}?category=${category}&orderBy=${orderBy}`}>
             <div className='card-container'>
-                <div className="image-container">
-                    <img src={movie.poster_path} alt={movie.title} />
-                    {
-                        optionsIsOpen
-                            ? <div className="options-dropdown">
-                                <div>
-                                    <IconContext.Provider value={{className: "close-icon"}}>
-                                        <BsX onClick={() => setOptionsIsOpen(false)}/>
-                                    </IconContext.Provider>
-                                </div>
-                                <p onClick={() => setEditMovieIsOpen(true)}>Edit</p>
-                                <p>Delete</p>
-                            </div>
-                            : <div className="options-icon-container">
-                                <IconContext.Provider value={{className: "options-icon"}}>
-                                    <BsThreeDotsVertical onClick={() => setOptionsIsOpen(true)}/>
+                <Link to={`${path}/${movie.id}?category=${category}&orderBy=${orderBy}`}>
+                    <div className="image-container">
+                        <img src={movie.poster_path} alt={movie.title} />
+                        
+                    </div>
+                    <div className='movie-infos'>
+                        <div>
+                            <span className='title'>{movie.title}</span>
+                            <div className="release-date">{releaseDate}</div>
+                        </div>
+                        <span className='genre'>
+                            {movie.genres.map((genre, i) => (i === movie.genres.length - 1) ? genre : genre + ', ')}
+                        </span>
+                    </div>
+                </Link>
+                {
+                    optionsIsOpen
+                        ? <div className="options-dropdown">
+                            <div>
+                                <IconContext.Provider value={{className: "close-icon"}}>
+                                    <BsX onClick={() => setOptionsIsOpen(false)}/>
                                 </IconContext.Provider>
                             </div>
-                    }
-                </div>
-                <div className='movie-infos'>
-                    <div>
-                        <span className='title'>{movie.title}</span>
-                        <div className="release-date">{releaseDate}</div>
-                    </div>
-                    <span className='genre'>
-                        {movie.genres.map((genre, i) => (i === movie.genres.length - 1) ? genre : genre + ', ')}
-                    </span>
-                </div>
+                            <p onClick={() => setEditMovieIsOpen(true)}>Edit</p>
+                            <p>Delete</p>
+                        </div>
+                        : <div className="options-icon-container">
+                            <IconContext.Provider value={{className: "options-icon"}}>
+                                <BsThreeDotsVertical onClick={() => setOptionsIsOpen(true)}/>
+                            </IconContext.Provider>
+                        </div>
+                }   
             </div>
-        </Link>
-        <AddEditMovieForm title={'EDIT MOVIE'} movieId={movie.id} isOpen={editMovieIsOpen} openModal={(isOpen) => setEditMovieIsOpen(isOpen)}/>
+            <AddEditMovieForm title={'EDIT MOVIE'} movieId={movie.id} isOpen={editMovieIsOpen} openModal={(isOpen) => setEditMovieIsOpen(isOpen)}/>
         </>
     );
 }

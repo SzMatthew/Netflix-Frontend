@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -8,11 +8,8 @@ import {IconContext} from "react-icons";
 import './AddEditMovieForm.scss';
 
 const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
-    Modal.setAppElement(document.getElementById('root'));
-
     const animatedComponents = makeAnimated();
-
-    const options = [
+    const options            = [
         {label: 'Action', value: 'Action'},
         {label: 'Advanture', value: 'Advanture'},
         {label: 'Science Fiction', value: 'Science Fiction'},
@@ -26,12 +23,76 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
         {label: 'Mystery', value: 'Mystery'},
         {label: 'History', value: 'History'}
     ];
-
-    const colors = {
-        red       : '#F65261',
-        mid_grey  : '#424242',
-        white     : '#FFFFFF',
+    const styleColors = {
+        red: '#F65261',
+        mid_grey: '#424242',
+        white: '#FFFFFF',
         light_grey: '#555555'
+    };
+    const customStyles = {
+        control: () => ({
+            backgroundColor: styleColors.light_grey,
+            color: styleColors.white,
+            display: 'flex',
+            borderRadius: '5px',
+            padding: '5px 0px'
+        }),
+        multiValue: styles => {
+            return {
+                ...styles,
+                backgroundColor: styleColors.mid_grey,
+                borderRadius: '5px'
+            };
+        },
+        multiValueLabel: styles => ({
+            ...styles,
+            color: styleColors.white,
+            fontSize: '15px',
+            opacity: '0.8',
+            fontWeight: '400'
+        }),
+        clearIndicator: styles => ({
+            ...styles,
+            '&:hover': {
+                color: styleColors.red
+            }
+        }),
+        dropdownIndicator: styles => ({
+            ...styles,
+            '&:hover': {
+                color: styleColors.red
+            }
+        }),
+        option: provided => ({
+            ...provided,
+            backgroundColor: styleColors.light_grey,
+            color: styleColors.white,
+            borderRadius: '5px',
+            '&:hover': {
+                backgroundColor: styleColors.red
+            }
+        }),
+        menu: provided => ({
+            ...provided,
+            backgroundColor: styleColors.light_grey
+        })
+    };
+
+    const [movieObj, setMovieObj] = useState({title: '', release_date: '', poster_path: '', genres: [], overview: '', runtime: ''});
+
+    Modal.setAppElement(document.getElementById('root'));
+
+    useEffect(() => getMovie(), [movieId]);
+
+    const getMovie = () => {
+        if (movieId)
+        {
+            fetch("http://localhost:4000/movies/" + movieId)
+			.then((res) => res.json())
+			.then((result) => {
+				setMovieObj(result);
+			});
+        }
     }
 
     const MovieIdFormGroup = () => {
@@ -47,57 +108,8 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
         }
     }
 
-    const customStyles = {
-        control: () => ({
-            backgroundColor: colors.light_grey,
-            color: colors.white,
-            display: 'flex',
-            borderRadius: '5px',
-            padding: '5px 0px'
-        }),
-        multiValue: (styles, { data }) => {
-            return {
-                ...styles,
-                backgroundColor: colors.mid_grey,
-                borderRadius: '5px'
-            };
-        },
-        multiValueLabel: (styles, { data }) => ({
-            ...styles,
-            color: colors.white,
-            fontSize: '15px',
-            opacity: '0.8',
-            fontWeight: '400'
-        }),
-        clearIndicator: (styles, {data}) => ({
-            ...styles,
-            '&:hover': {
-                color: colors.red
-            }
-        }),
-        dropdownIndicator: (styles, {data}) => ({
-            ...styles,
-            '&:hover': {
-                color: colors.red
-            }
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            backgroundColor: colors.light_grey,
-            color: colors.white,
-            borderRadius: '5px',
-            '&:hover': {
-                backgroundColor: colors.red
-            }
-        }),
-        menu: (provided, state) => ({
-            ...provided,
-            backgroundColor: colors.light_grey
-        })
-    }
-
     return (
-        <Modal isOpen={isOpen} className='modal' overlayClassName="modal-overlay">
+        <Modal isOpen={isOpen} className='modal' overlayClassName="modal-overlay" closeTimeoutMS={350}>
             <header>
                 <h2>{title}</h2>
                 <IconContext.Provider value={{className: "close-icon"}}>
@@ -106,7 +118,7 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
             </header>
             
             <Formik
-                initialValues={{title: '', release_date: '', movie_url: '', genres: [], overview: '', runtime: ''}}
+                initialValues={movieObj}
                 validate={values => {
                     const errors = {};
                     if (!values.title){
@@ -115,8 +127,8 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                     if (!values.release_date){
                         errors.release_date = 'Required';
                     }
-                    if (!values.movie_url){
-                        errors.movie_url = 'Required';
+                    if (!values.poster_path){
+                        errors.poster_path = 'Required';
                     }
                     if (!values.genre){
                         errors.genre = 'Select at least one genre to proceed'
@@ -126,6 +138,8 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                     }
                     if (!values.runtime){
                         errors.runtime = 'Required';
+                    } else if (!/^[0-9]+$/i.test(values.runtime)){
+                        errors.runtime = 'Runtime only takes numbers!';
                     }
                     return errors;
                 }}
@@ -148,9 +162,9 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                         <input type='date' name='release_date' value={values.release_date} onChange={handleChange} onBlur={handleBlur} placeholder="Select Date"></input>
                         <ErrorMessage name="release_date" component="div" className='error-message'/>
 
-                        <label htmlFor="movie_url">RELEASE DATE</label>
-                        <input type='text' name='movie_url' value={values.movie_url} onChange={handleChange} onBlur={handleBlur} placeholder="Movie URL Here"></input>
-                        <ErrorMessage name="movie_url" component="div" className='error-message'/>
+                        <label htmlFor="poster_path">POSTER URL</label>
+                        <input type='text' name='poster_path' value={values.poster_path} onChange={handleChange} onBlur={handleBlur} placeholder="Poster URL Here"></input>
+                        <ErrorMessage name="poster_path" component="div" className='error-message'/>
 
                         <label htmlFor="genres">GENRES</label>
                         <Select isMulti closeMenuOnSelect={false} components={animatedComponents} styles={customStyles} name='genres' options={options}></Select>

@@ -94,5 +94,19 @@ select {
     cursor: default;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+}
 
+::-webkit-scrollbar-track {
+    background: $dark-grey; 
+}
 
+::-webkit-scrollbar-thumb {
+    background: $mid-grey; 
+    border-radius: $border-radius;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $light-grey;
+}
