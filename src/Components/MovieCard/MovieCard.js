@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import AddEditMovieForm from '../../Components/Add-EditMovieForm/AddEditMovieForm';
+import DeleteMovieModal from '../DeleteMovieModal/DeleteMovieModal';
 import {Link, useRouteMatch} from 'react-router-dom';
 import {useCategory} from '../../Contexts/category-context';
 import {useOrderBy} from '../../Contexts/order-by-context';
@@ -8,12 +9,13 @@ import {IconContext} from "react-icons";
 import './MovieCard.scss';
 
 const MovieCard = ({movie}) => {
-    const releaseDate = movie.release_date.split('-')[0];
-    const {state: {category}} = useCategory();
-    const {state: {orderBy}} = useOrderBy();
-    const {path} = useRouteMatch();
-    const [optionsIsOpen, setOptionsIsOpen] = useState(false);
-    const [editMovieIsOpen, setEditMovieIsOpen] = useState(false);
+    const releaseDate                               = movie.release_date.split('-')[0];
+    const {state: {category}}                       = useCategory();
+    const {state: {orderBy}}                        = useOrderBy();
+    const {path}                                    = useRouteMatch();
+    const [optionsIsOpen, setOptionsIsOpen]         = useState(false);
+    const [editMovieIsOpen, setEditMovieIsOpen]     = useState(false);
+    const [deleteMovieIsOpen, setDeleteMovieIsOpen] = useState(false);
 
     return (
         <>
@@ -42,7 +44,7 @@ const MovieCard = ({movie}) => {
                                 </IconContext.Provider>
                             </div>
                             <p onClick={() => setEditMovieIsOpen(true)}>Edit</p>
-                            <p>Delete</p>
+                            <p onClick={() => setDeleteMovieIsOpen(true)}>Delete</p>
                         </div>
                         : <div className="options-icon-container">
                             <IconContext.Provider value={{className: "options-icon"}}>
@@ -51,7 +53,8 @@ const MovieCard = ({movie}) => {
                         </div>
                 }   
             </div>
-            <AddEditMovieForm title={'EDIT MOVIE'} movieId={movie.id} isOpen={editMovieIsOpen} openModal={(isOpen) => setEditMovieIsOpen(isOpen)}/>
+            <AddEditMovieForm title={'EDIT MOVIE'} movieId={movie.id} isOpen={editMovieIsOpen} openModal={(isOpen) => setEditMovieIsOpen(isOpen)} />
+            <DeleteMovieModal movieId={movie.id} isOpen={deleteMovieIsOpen} openModal={(isOpen) => setDeleteMovieIsOpen(isOpen)}/>
         </>
     );
 }

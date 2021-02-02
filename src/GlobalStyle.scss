@@ -17,6 +17,7 @@ button{
     background-color: $light-grey;
     outline         : none;
     font-size       : 17px;
+    transition      : 0.2s;
 
     &:hover{
         cursor: pointer;
