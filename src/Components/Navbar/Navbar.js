@@ -1,12 +1,13 @@
 import React from 'react';
 import { useCategory } from '../../Contexts/category-context';
 import { useOrderBy } from '../../Contexts/order-by-context';
-import { Link } from "react-router-dom"
+import { Link, useRouteMatch } from "react-router-dom"
 import './Navbar.scss';
 
 const Navbar = () => { 
     const {state: {category}, setCategory} = useCategory();
-    const {state: {orderBy}, setOrderBy}   = useOrderBy();
+    const {state: {orderBy}, setOrderBy} = useOrderBy();
+    const {path} = useRouteMatch();
     
     const changeOrderBy = event => setOrderBy(event.target.value)
 
