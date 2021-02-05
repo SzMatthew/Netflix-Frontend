@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
-import {Formik, ErrorMessage} from 'formik';
+import {Formik, Form, ErrorMessage} from 'formik';
+import MultiSelect from "../MultiSelect/MultiSelect";
 import {BsX} from 'react-icons/bs';
 import {IconContext} from "react-icons";
 import './AddEditMovieForm.scss';
 
 const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
-    const animatedComponents = makeAnimated();
-    const options            = [
+    const options = [
         {label: 'Action', value: 'Action'},
-        {label: 'Advanture', value: 'Advanture'},
+        {label: 'Adventure', value: 'Adventure'},
         {label: 'Science Fiction', value: 'Science Fiction'},
         {label: 'Fantasy', value: 'Fantasy'},
         {label: 'Documentary', value: 'Documentary'},
@@ -23,62 +21,9 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
         {label: 'Mystery', value: 'Mystery'},
         {label: 'History', value: 'History'}
     ];
-    const styleColors = {
-        red: '#F65261',
-        mid_grey: '#424242',
-        white: '#FFFFFF',
-        light_grey: '#555555'
-    };
-    const customStyles = {
-        control: () => ({
-            backgroundColor: styleColors.light_grey,
-            color: styleColors.white,
-            display: 'flex',
-            borderRadius: '5px',
-            padding: '5px 0px'
-        }),
-        multiValue: styles => {
-            return {
-                ...styles,
-                backgroundColor: styleColors.mid_grey,
-                borderRadius: '5px'
-            };
-        },
-        multiValueLabel: styles => ({
-            ...styles,
-            color: styleColors.white,
-            fontSize: '15px',
-            opacity: '0.8',
-            fontWeight: '400'
-        }),
-        clearIndicator: styles => ({
-            ...styles,
-            '&:hover': {
-                color: styleColors.red
-            }
-        }),
-        dropdownIndicator: styles => ({
-            ...styles,
-            '&:hover': {
-                color: styleColors.red
-            }
-        }),
-        option: provided => ({
-            ...provided,
-            backgroundColor: styleColors.light_grey,
-            color: styleColors.white,
-            borderRadius: '5px',
-            '&:hover': {
-                backgroundColor: styleColors.red
-            }
-        }),
-        menu: provided => ({
-            ...provided,
-            backgroundColor: styleColors.light_grey
-        })
-    };
 
-    const [movieObj, setMovieObj] = useState({title: '', release_date: '', poster_path: '', genres: [], overview: '', runtime: ''});
+    
+    const [movieObj, setMovieObj] = useState({title: '', tagline: '', release_date: '', vote_average: '', poster_path: '', genres: [], overview: '', budget: '', runtime:''});
 
     Modal.setAppElement(document.getElementById('root'));
 
@@ -108,6 +53,72 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
         }
     }
 
+    const ValidateForm = (values) => {
+        const errors = {};
+        if (!values.title){
+            errors.title = 'Required';
+        }
+        if (!values.release_date){
+            errors.release_date = 'Required';
+        }
+        if (!values.vote_average)
+        {
+            errors.vote_average = 'Required';
+        }
+        else if (!/^[0-9.]+$/i.test(values.vote_average))
+        {
+            errors.vote_average = 'Score only takes numbers and dot!'
+        }
+        if (!values.poster_path){
+            errors.poster_path = 'Required';
+        }    
+        if (values.genres.length === 0){
+            errors.genres = 'Required';
+            console.log('VAlassy');
+        }
+        if (!values.overview){
+            errors.overview = 'Required';
+        }
+        if (!/^[0-9]+$/i.test(values.budget) && values.budget){
+            errors.budget = 'Budget only takes numbers!';
+        }
+        if (!values.runtime) {
+            errors.runtime = 'Required';
+        }
+        else if (!/^[0-9]+$/i.test(values.runtime)){
+            errors.runtime = 'Runtime only takes numbers!';
+        }
+        return errors;
+    }
+
+    const EditMovie = values => {
+        values.id = movieId;
+
+        fetch("http://localhost:4000/movies", {
+            method: 'PUT',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(values)
+        })
+            .then(res => res.json())
+            .then(() => {openModal(false)})
+            .catch((error) => {
+                console.log("ERROR MESSAGES:", error.toString());
+            });
+    }
+
+    const UploadMovie = values => {
+        fetch("http://localhost:4000/movies", {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(values)
+        })
+            .then(res => res.json())
+            .then(() => {openModal(false)})
+            .catch((error) => {
+                console.log("ERROR MESSAGES:", error.toString());
+            });
+    }
+
     return (
         <Modal isOpen={isOpen} className='modal' overlayClassName="modal-overlay" closeTimeoutMS={350}>
             <header>
@@ -119,62 +130,60 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
             
             <Formik
                 initialValues={movieObj}
-                validate={values => {
-                    const errors = {};
-                    if (!values.title){
-                        errors.title = 'Required';
-                    }
-                    if (!values.release_date){
-                        errors.release_date = 'Required';
-                    }
-                    if (!values.poster_path){
-                        errors.poster_path = 'Required';
-                    }
-                    if (!values.genre){
-                        errors.genre = 'Select at least one genre to proceed'
-                    }
-                    if (!values.overview){
-                        errors.overview = 'Required';
-                    }
-                    if (!values.runtime){
-                        errors.runtime = 'Required';
-                    } else if (!/^[0-9]+$/i.test(values.runtime)){
-                        errors.runtime = 'Runtime only takes numbers!';
-                    }
-                    return errors;
-                }}
+                validate={values => ValidateForm(values)}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
+                        values.runtime = parseInt(values.runtime);
+                        values.vote_average = parseFloat(values.vote_average);
+                        if (values.tagline === ''){
+                            delete values.tagline;
+                        }
+                        if (values.budget === ''){
+                            delete values.budget;
+                        }
+
+                        movieId
+                            ? EditMovie(values)
+                            : UploadMovie(values)
                         setSubmitting(false);
                     }, 400);
-                    }}
+                }}
             >
-                {({values, handleChange, handleBlur, handleReset, handleSubmit, isSubmitting,}) => (
-                    <form onSubmit={handleSubmit}>
+                {({values, handleChange, handleBlur, handleReset, handleSubmit, isSubmitting, setFieldValue}) => (
+                    <Form onSubmit={handleSubmit}>
                         <MovieIdFormGroup />
-                        
-                        <label htmlFor="title">TITLE</label>
+                        <label htmlFor="title">TITLE*</label>
                         <input type='text' name='title' value={values.title} onChange={handleChange} onBlur={handleBlur} placeholder="Title here"></input>
-                        <ErrorMessage name="title" component="div" className='error-message'/>
+                        <ErrorMessage name="title" component="div" className='error-message' />
+                        
+                        <label htmlFor="tagline">TAGLINE</label>
+                        <input type='text' name='tagline' value={values.tagline} onChange={handleChange} placeholder="Tagline here"></input>
 
-                        <label htmlFor="release_date">RELEASE DATE</label>
+                        <label htmlFor="release_date">RELEASE DATE*</label>
                         <input type='date' name='release_date' value={values.release_date} onChange={handleChange} onBlur={handleBlur} placeholder="Select Date"></input>
-                        <ErrorMessage name="release_date" component="div" className='error-message'/>
+                        <ErrorMessage name="release_date" component="div" className='error-message' />
+                        
+                        <label htmlFor="vote_average">SCORE*</label>
+                        <input type='text' name='vote_average' value={values.vote_average} onChange={handleChange} onBlur={handleBlur} placeholder="Score here"></input>
+                        <ErrorMessage name="vote_average" component="div" className='error-message'/>
 
-                        <label htmlFor="poster_path">POSTER URL</label>
+                        <label htmlFor="poster_path">POSTER URL*</label>
                         <input type='text' name='poster_path' value={values.poster_path} onChange={handleChange} onBlur={handleBlur} placeholder="Poster URL Here"></input>
                         <ErrorMessage name="poster_path" component="div" className='error-message'/>
 
-                        <label htmlFor="genres">GENRES</label>
-                        <Select isMulti closeMenuOnSelect={false} components={animatedComponents} styles={customStyles} name='genres' options={options}></Select>
+                        <label htmlFor="genres">GENRES*</label>
+                        <MultiSelect name="genres" options={options} values={values.genres} customOnBlur={() =>handleBlur} onChange={value => setFieldValue('genres', value)}/>
                         <ErrorMessage name="genres" component="div" className='error-message'/>
 
-                        <label htmlFor="overview">OVERVIEW</label>
+                        <label htmlFor="overview">OVERVIEW*</label>
                         <input type='text' name='overview' value={values.overview} onChange={handleChange} onBlur={handleBlur} placeholder="Overview Text Goes Here"></input>
-                        <ErrorMessage name="overview" component="div" className='error-message'/>
+                        <ErrorMessage name="overview" component="div" className='error-message' />
+                        
+                        <label htmlFor="budget">BUDGET</label>
+                        <input type='text' name='budget' value={values.budget} onChange={handleChange} onBlur={handleBlur} placeholder="Budget Goes Here"></input>
+                        <ErrorMessage name="budget" component="div" className='error-message'/>
 
-                        <label htmlFor="runtime">RUNTIME</label>
+                        <label htmlFor="runtime">RUNTIME*</label>
                         <input type='text' name='runtime' value={values.runtime} onChange={handleChange} onBlur={handleBlur} placeholder="Runtime Text Goes Here"></input>
                         <ErrorMessage name="runtime" component="div" className='error-message'/>
 
@@ -182,7 +191,7 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                             <button className="red-border" disabled={isSubmitting} onClick={handleReset}>RESET</button>
                             <button type='button' className="red" disabled={isSubmitting} onClick={handleSubmit}>{movieId ? 'SAVE' : 'SUBMIT'}</button>
                         </footer>
-                    </form>
+                    </Form>
                 )}
             </Formik>
         </Modal>

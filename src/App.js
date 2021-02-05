@@ -2,6 +2,7 @@ import './GlobalStyle.scss';
 import Header from './Components/Header/Header';
 import MovieListContainer from './Components/MovieListContainer/MovieListContainer';
 import RoutingErrorPage from './Components/404Page/RoutingErrorPage';
+
 import {CategoryProvider} from './Contexts/category-context';
 import {OrderByProvider} from './Contexts/order-by-context';
 import {SearchProvider} from './Contexts/search-context';
@@ -9,7 +10,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 const App = () => {
   return (
-    <CategoryProvider className="App">
+
+      <CategoryProvider className="App">
         <OrderByProvider>
           <SearchProvider>
             <Switch>
@@ -27,6 +29,7 @@ const App = () => {
           </SearchProvider>
         </OrderByProvider>
       </CategoryProvider>
+
   );
 }
 
