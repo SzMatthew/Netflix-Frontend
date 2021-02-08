@@ -10,7 +10,12 @@ const DeleteMovieModal = ({movieId, isOpen, openModal}) => {
     const DeleteMovie = () => {
         fetch("http://localhost:4000/movies/" + movieId, {
             method: 'DELETE'
-        }).then(() => setIsDeleted(true));
+        }).then(() => {
+            setIsDeleted(true);
+            setTimeout(() => {
+                openModal(false);
+            }, 2000);
+        });
     }
 
     return (

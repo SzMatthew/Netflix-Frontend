@@ -7,8 +7,9 @@ import MovieCard from '../MovieCard/MovieCard';
 import Navbar from '../Navbar/Navbar';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import notFoundSVG from '../../Images/empty.svg';
-import './MovieListContainer.scss';
+import Loading from '../Loading/Loading';
 import {useRouteMatch, Switch, Route} from 'react-router-dom';
+import './MovieListContainer.scss';
 
 const MovieListContainer = () => {
     const {state: {category}, setCategory}        = useCategory();
@@ -16,6 +17,7 @@ const MovieListContainer = () => {
     const {state: {searchWord}}                   = useSearch();
     const [movies, setMovies]                     = useState([]);
     const [totalMovieAmount, setTotalMovieAmount] = useState(0);
+    const [isLoading, setLoading]                   = useState(false);
     const categoryQueryParam                      = useQuery().get('category');
     const {path}                                  = useRouteMatch();
     const orderByQueryParam                       = useQuery().get('orderBy');
@@ -26,15 +28,14 @@ const MovieListContainer = () => {
     // eslint-disable-next-line
     useEffect(() => getMovies(), [category, orderBy, searchWord]);
 
-    const getMovies = () => { 
-        fetch('http://localhost:4000/movies?limit=100&filter=' + (category === 'all' ? '' : category) + `&sortBy=${orderBy}&sortOrder=desc&search=${searchWord}&searchBy=title`)
-            .then(res => res.json())
-            .then(
-                ({data}) => {
-                    setMovies(data);
-                    setTotalMovieAmount(data.length);
-                }
-            );
+    const getMovies = async () => { 
+        setLoading(true);
+        const response = await fetch('http://localhost:4000/movies?limit=100&filter=' + (category === 'all' ? '' : category) + `&sortBy=${orderBy}&sortOrder=desc&search=${searchWord}&searchBy=title`);
+        const json = await response.json();
+
+        setMovies(json.data);
+        setLoading(false);
+        setTotalMovieAmount(json.data.length);      
     }
 
     const NoMovieToList = () => { 
@@ -63,7 +64,13 @@ const MovieListContainer = () => {
                             : movies.map(movie => <MovieCard key={movie.id} movie={movie} />)
                     }
                 </section>
+                
             </main>
+            {
+                isLoading
+                    ? <Loading />
+                    : null
+            }
         </>
     );
 }

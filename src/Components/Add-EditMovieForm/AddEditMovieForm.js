@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import StatusResponseModal from '../StatusResponseModal/StatusResponseModal';
 import {Formik, Form, ErrorMessage} from 'formik';
 import MultiSelect from "../MultiSelect/MultiSelect";
+import Loading from '../Loading/Loading';
 import {BsX} from 'react-icons/bs';
 import {IconContext} from "react-icons";
 import './AddEditMovieForm.scss';
@@ -23,10 +24,10 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
         {label: 'History', value: 'History'}
     ];
 
-    const [movieObj, setMovieObj] = useState({title: '', tagline: '', release_date: '', vote_average: '', poster_path: '', genres: [], overview: '', budget: '', runtime: ''});
-    
+    const [movieObj, setMovieObj]                               = useState({title: '', tagline: '', release_date: '', vote_average: '', poster_path: '', genres: [], overview: '', budget: '', runtime: ''});
     const [statusResponseModalOpen, setStatusResponseModalOpen] = useState(false);
-    const [fetchIsSuccessfull, setFetchIsSuccessfull] = useState(false);
+    const [fetchIsSuccessfull, setFetchIsSuccessfull]           = useState(false);
+    const [isLoading, setLoading]                               = useState(false);
 
     Modal.setAppElement(document.getElementById('root'));
 
@@ -35,10 +36,12 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
     const getMovie = () => {
         if (movieId)
         {
+            setLoading(true);
             fetch("http://localhost:4000/movies/" + movieId)
 			.then((res) => res.json())
 			.then((result) => {
-				setMovieObj(result);
+                setMovieObj(result);
+                setLoading(false);
 			});
         }
     }
@@ -94,6 +97,7 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
     }
 
     const EditMovie = values => {
+        setLoading(true);
         values.id = movieId;
 
         fetch("http://localhost:4000/movies", {
@@ -106,14 +110,17 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                 openModal(false);
                 setFetchIsSuccessfull(true);
                 setStatusResponseModalOpen(true);
+                setLoading(false);
             })
             .catch((error) => {
                 setFetchIsSuccessfull(false);
                 setStatusResponseModalOpen(true);
+                setLoading(false);
             });
     }
 
     const UploadMovie = values => {
+        setLoading(true);
         fetch("http://localhost:4000/movies", {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
@@ -124,10 +131,12 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                 openModal(false);
                 setFetchIsSuccessfull(true);
                 setStatusResponseModalOpen(true);
+                setLoading(false);
             })
             .catch((error) => {
                 setFetchIsSuccessfull(false);
                 setStatusResponseModalOpen(true);
+                setLoading(false);
             });
     }
 
@@ -145,21 +154,19 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                     initialValues={movieObj}
                     validate={values => ValidateForm(values)}
                     onSubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            values.runtime = parseInt(values.runtime);
-                            values.vote_average = parseFloat(values.vote_average);
-                            if (values.tagline === ''){
-                                delete values.tagline;
-                            }
-                            if (values.budget === ''){
-                                delete values.budget;
-                            }
+                        values.runtime = parseInt(values.runtime);
+                        values.vote_average = parseFloat(values.vote_average);
+                        if (values.tagline === ''){
+                            delete values.tagline;
+                        }
+                        if (values.budget === ''){
+                            delete values.budget;
+                        }
 
-                            movieId
-                                ? EditMovie(values)
-                                : UploadMovie(values)
-                            setSubmitting(false);
-                        }, 400);
+                        movieId
+                            ? EditMovie(values)
+                            : UploadMovie(values)
+                        setSubmitting(false);
                     }}
                 >
                     {({values, handleChange, handleBlur, handleReset, handleSubmit, isSubmitting, setFieldValue}) => (
@@ -207,8 +214,10 @@ const AddEditMovieForm = ({title, movieId, isOpen, openModal}) => {
                         </Form>
                     )}
                 </Formik>
+                { isLoading ? <Loading/> : null }
             </Modal>
-            <StatusResponseModal type={fetchIsSuccessfull ? 1 : 2} isOpen={statusResponseModalOpen} openModal={(isOpen) => setStatusResponseModalOpen(isOpen)}/>
+            <StatusResponseModal type={fetchIsSuccessfull ? 1 : 2} isOpen={statusResponseModalOpen} openModal={(isOpen) => setStatusResponseModalOpen(isOpen)} />
+            
         </>
     );
     
