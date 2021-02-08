@@ -14,7 +14,7 @@ const DeleteMovieModal = ({movieId, isOpen, openModal}) => {
     }
 
     return (
-        <Modal isOpen={isOpen} className='modal' overlayClassName="modal-overlay" closeTimeoutMS={350}>
+        <Modal isOpen={isOpen} className='modal delete-modal' overlayClassName="modal-overlay" closeTimeoutMS={350}>
             <header>
                 <h2>DELETE MOVIE</h2>
                 <IconContext.Provider value={{className: "close-icon"}}>

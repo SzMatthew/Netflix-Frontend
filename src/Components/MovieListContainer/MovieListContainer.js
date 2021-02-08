@@ -10,7 +10,6 @@ import notFoundSVG from '../../Images/empty.svg';
 import './MovieListContainer.scss';
 import {useRouteMatch, Switch, Route} from 'react-router-dom';
 
-
 const MovieListContainer = () => {
     const {state: {category}, setCategory}        = useCategory();
     const {state: {orderBy}, setOrderBy}          = useOrderBy();

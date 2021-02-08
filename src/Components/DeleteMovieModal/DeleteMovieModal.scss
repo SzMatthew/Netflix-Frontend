@@ -1,39 +1,6 @@
 @import "../../Variables.scss";
 
-.modal-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-    background-image: url(../../Images/blured_background.jpg);
-}
-
-.ReactModal__Overlay {
-    height: 0px;
-    transition: height 350ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open{
-    height: 100vh;
-}
-
-.ReactModal__Overlay--before-close{
-    height: 0px;
-}
-
-.modal{
-    $width: 800px;
-
-    margin: 60px auto;
-    width: $width;
-    border-radius: $border-radius;
-    border: none;
-    outline: none;
-    background-color: $dark-grey;
-    padding: 20px 80px;
-
+.delete-modal{
     header{
         display: flex;
         justify-content: space-between;
@@ -44,36 +11,25 @@
             font-size: 33px;
             font-weight: 100;
             letter-spacing: 1px;
-            margin: 10px 0px;
-        }
-
-        .close-icon{
-            color: $white;
-            opacity: 0.6;
-            font-size: 32px;
-            transition: 0.3s;
-            cursor: pointer;
-
-            &:hover{
-                transform: scale(1.2);
-                opacity: 0.8;
-                color: $red;
-            }
+            margin-top: 10px;
         }
     }
 
     section{
         h3{
             color: $white;
-            opacity: 0.9;
-            font-size: 17px;
+            opacity: 0.8;
+            font-size: 22px;
             font-weight: 100;
             letter-spacing: 0px;
-            margin: 10px 0px;
+            margin: 40px 0px;
         }
     }
 
     footer{
+        text-align: center;
+        padding: 10px;
+
         .movie-delted-msg{
             background-color: green;
             padding         : 10px 20px;
